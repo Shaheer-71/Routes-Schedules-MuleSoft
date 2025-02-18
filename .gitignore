@@ -16,6 +16,7 @@
 *.tar.gz
 *.bak
 
+
 # Ignore temporary files created by IDEs
 *.swp
 *~.nib
