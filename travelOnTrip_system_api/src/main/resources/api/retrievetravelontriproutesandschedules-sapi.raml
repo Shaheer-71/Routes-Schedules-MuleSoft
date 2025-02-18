@@ -1,0 +1,72 @@
+#%RAML 1.0
+title: RetrieveTravelOnTripRoutesAndSchedules-SAPI
+description: This APi will fetch Routes and Schedule from Travel on Trip system
+
+uses:
+  common : /library/common/commonBusinessLibrary.raml
+  routes : /library/routes/routesBusinessLibrary.raml
+  schedule : /library/schedules/scheduleBusinessLibrary.raml
+
+
+
+/{transportType}:
+  /{transportCompany}:
+
+    /routes:
+      get:
+        is:
+          - common.transactionId
+        
+        responses:
+          200:
+            body:
+              application/json:
+                type: routes.getRoute-response-200
+                example: !include /library/routes/examples/getRoutes-response-200-example.json
+          400:
+            body:
+              application/json:
+                type: common.common400Response
+                example: !include /library/common/examples/400-response-example.json
+          404:
+            body:
+              application/json:
+                type: common.common404Response
+                example: !include /library/common/examples/404-response-example.json
+          500:
+            body:
+              application/json:
+                type: common.common500Response
+                example: !include /library/common/examples/500-response-example.json 
+
+    /schedule:                 
+      get:
+        is:
+          - common.transactionId
+          - common.departureLocationCode
+          - common.destinationLocationCode
+
+        responses:
+          200:
+            body:
+              application/json:
+                type: schedule.getSchedule-response-200
+                example: !include /library/schedules/example/getSchedule-response-200-example.json
+          400:
+            body:
+              application/json:
+                type: common.common400Response
+                example: !include /library/common/examples/400-response-example.json  
+          404:
+            body:
+              application/json:
+                type: common.common404Response
+                example: !include /library/common/examples/404-response-example.json                  
+          500:
+            body:
+              application/json:
+                type: common.common500Response
+                example: !include /library/common/examples/500-response-example.json 
+
+
+

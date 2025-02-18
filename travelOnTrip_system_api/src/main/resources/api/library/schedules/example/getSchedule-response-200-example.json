@@ -1,0 +1,32 @@
+[
+  {
+    "companyName": "Travel On Trip",
+    "availableSeats": 20,
+    "departureDateTime": "2025-02-10T10:00:00",
+    "travelRoute": {
+      "destinationLocation": {
+        "locationCode": "FRA-DE",
+        "locationDesc": "Frankfurt, Germany"
+      },
+      "originLocation": {
+        "locationCode": "BER-DE",
+        "locationDesc": "Berlin, Germany"
+      }
+    }
+  },
+  {
+    "companyName": "Travel On Trip",
+    "availableSeats": 20,
+    "departureDateTime": "2025-02-10T10:00:00",
+    "travelRoute": {
+      "destinationLocation": {
+        "locationCode": "FRA-DE",
+        "locationDesc": "Frankfurt, Germany"
+      },
+      "originLocation": {
+        "locationCode": "BER-DE",
+        "locationDesc": "Berlin, Germany"
+      }
+    }
+  }
+]
