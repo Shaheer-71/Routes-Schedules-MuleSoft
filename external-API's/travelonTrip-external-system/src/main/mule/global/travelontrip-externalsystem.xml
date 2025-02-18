@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="travelontrip-externalsystemFlow" doc:id="2026299b-4c8e-4ddd-899f-53f4eefa6aa2" >
+		<http:listener doc:name="Listener" doc:id="bca0ebf6-b210-4ee0-be38-b098d56140d6" config-ref="HTTP_Listener_config" path="${http.listener.path}">
+			<http:error-response statusCode="400">
+				<http:body ><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+	"Error " : error.description default "critical error",
+	"Code" : "XE1032"
+}]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<logger level="INFO" doc:name="Logger" doc:id="a90e68e3-f5ef-43dc-9113-e66a42d12bf5" message="Request Recieve for TravelonTrip External System :  #[attributes.headers.transactionId] and #[attributes.uriParams.serviceType]"/>
+		<ee:transform doc:name="Transform Message" doc:id="6d6e4398-3f86-4622-a3fa-a40d857fd1bc">
+			<ee:message>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="transactionId"><![CDATA[%dw 2.0
+output application/json
+---
+attributes.headers.transactionId]]></ee:set-variable>
+				<ee:set-variable variableName="serviceType"><![CDATA[%dw 2.0
+output application/json
+---
+attributes.uriParams.serviceType
+]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<choice doc:name="Choice" doc:id="941f9a6b-c287-407c-ab5e-74484c9665a1">
+			<when expression='#[vars.serviceType == "route"]'>
+				<logger level="INFO" doc:name="Logger" doc:id="4172e60e-2f55-404a-9c61-b27575e155db" message="Route flow called for TravelonTrip External System for TransactionID  :  #[vars.transactionId]" />
+				<flow-ref doc:name="Flow Reference" doc:id="2c012876-ebbc-41b6-97e9-41a553801c3b" name="TravelonTrip-GetRoutes-ImplementationSub_Flow" />
+			</when>
+			<when expression='#[vars.serviceType == "schedule"]'>
+				<logger level="INFO" doc:name="Logger" doc:id="01a91096-957e-4c9f-bea1-5f3a9b7af344" message="Schedule flow called for TravelonTrip External System for TransactionID  :  #[vars.transactionId]" />
+				<flow-ref doc:name="Flow Reference" doc:id="09c41358-4f5b-490d-b262-a2cb539c17d0" name="TravelonTrip-GetSchedules-ImplementationSub_Flow" />
+			</when>
+			<otherwise>
+				<logger level="INFO" doc:name="Logger" doc:id="faeccde0-81ce-4a80-aa58-c7b539bf9b9b" message="URI parameters is not correct for TravelonTrip External System for TransactionID  :  #[vars.transactionId]" />
+			</otherwise>
+		</choice>
+		<logger level="INFO" doc:name="Logger" doc:id="771653e6-60d9-4326-9efc-f0c101420a0c" message="Response Send for TravelonTrip External System for transactionId :  #[vars.transactionId]"/>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="5594ad6e-b924-4210-8da6-faae1316020c" >
+				<logger level="INFO" doc:name="Logger" doc:id="6ccd9e53-2573-4bbd-9d31-df12d6202a0e" message="Error Occured for TravelonTrip External System  for TransactionID  :  #[vars.transactionId], Reason :  #[error.errorMessage], Type :  #[error.errorType]"/>
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+</mule>
