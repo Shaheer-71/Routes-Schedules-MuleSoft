@@ -1,0 +1,38 @@
+# Ignore MuleSoft specific files
+/.mule/
+/target/
+/logs/
+/mule-app/
+/*.iml
+/.project
+/.settings/
+/.idea/
+/.vscode/
+
+# Ignore build directories and files
+*.jar
+*.war
+*.zip
+*.tar.gz
+*.bak
+
+# Ignore temporary files created by IDEs
+*.swp
+*~.nib
+*.log
+*.class
+
+# Ignore .DS_Store files (macOS)
+.DS_Store
+
+# Ignore other system files
+Thumbs.db
+ehthumbs.db
+
+# Ignore Maven build files
+/.mvn/
+/mvnw
+/mvnw.cmd
+
+# Ignore environment-specific files
+/.env
