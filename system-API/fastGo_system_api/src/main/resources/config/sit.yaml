@@ -1,0 +1,11 @@
+
+http :
+  listener:
+    host: "0.0.0.0"
+    port: "8084"
+    path : "/{transportType}/{transportCompany}/{serviceType}"
+  requester:
+    host: "localhost"
+    port: "8082"
+    routesPath: "/fastGoTripCall/route"
+    schedulePath: "/fastGoTripCall/schedule"

@@ -1,0 +1,10 @@
+[
+  {
+    "departureLocationCode": "BEN-SG",
+    "arrivalLocationCode": "KLG-MY"
+  },
+  {
+    "departureLocationCode": "ABC-SG",
+    "arrivalLocationCode": "DEF-MY"
+  }
+]
