@@ -46,7 +46,7 @@ attributes.uriParams.serviceType
 				<logger level="INFO" doc:name="Logger" doc:id="faeccde0-81ce-4a80-aa58-c7b539bf9b9b" message="URI parameters is not correct for TravelonTrip External System for TransactionID  :  #[vars.transactionId]" />
 			</otherwise>
 		</choice>
-		<logger level="INFO" doc:name="Logger" doc:id="771653e6-60d9-4326-9efc-f0c101420a0c" message="Response Send for TravelonTrip External System for transactionId :  #[vars.transactionId]"/>
+		<logger level="INFO" doc:name="Logger-out" doc:id="771653e6-60d9-4326-9efc-f0c101420a0c" message="Response Send for TravelonTrip External System for transactionId :  #[vars.transactionId]"/>
 		<error-handler >
 			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="5594ad6e-b924-4210-8da6-faae1316020c" >
 				<logger level="INFO" doc:name="Logger" doc:id="6ccd9e53-2573-4bbd-9d31-df12d6202a0e" message="Error Occured for TravelonTrip External System  for TransactionID  :  #[vars.transactionId], Reason :  #[error.errorMessage], Type :  #[error.errorType]"/>

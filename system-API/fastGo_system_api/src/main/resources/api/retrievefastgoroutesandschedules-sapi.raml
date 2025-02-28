@@ -12,7 +12,7 @@ uses:
 
 /{transportType}:
   /{transportCompany}:
-    /routes:
+    /route:
       get:
         is :
           - common.transactionId
@@ -40,7 +40,7 @@ uses:
                 example: !include /libraries/common/examples/500-res-example.json 
 
 
-    /schedules:
+    /schedule:
       get :
         is :
           - common.transactionId

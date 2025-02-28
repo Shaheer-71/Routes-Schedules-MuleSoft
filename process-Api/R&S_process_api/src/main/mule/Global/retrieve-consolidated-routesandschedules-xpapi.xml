@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
+      <flow name="RnS-papi-main">
+        <http:listener config-ref="RnS-papi-httpListenerConfig" path="/api/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:router config-ref="RnS-papi-config" />
+		<error-handler ref="globalErrorHandlerError_Handler" />
+    </flow>
+    <flow name="retrieve-consolidated-RnS-papi-consolee">
+        <http:listener config-ref="RnS-papi-httpListenerConfig" path="/console/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:console config-ref="RnS-papi-config" />
+		<error-handler ref="globalErrorHandlerError_Handler" />
+    </flow>
+    <sub-flow name="get:\booking\(transportType)\route:RnS-Initializing-Var-papi-Sub_Flow" doc:id="7271316b-1f71-4f25-b10b-bdbe0b79054c" >
+		<ee:transform doc:name="Initialize Variable for request event" doc:id="146a31e8-a878-4352-90fb-0fa568d0f502" >
+			<ee:variables >
+				<ee:set-variable variableName="transportType" ><![CDATA[attributes.uriParams.'transportType']]></ee:set-variable>
+				<ee:set-variable variableName="transportCompany" ><![CDATA[attributes.queryParams.'companyName']]></ee:set-variable>
+				<ee:set-variable variableName="transactionId" ><![CDATA[attributes.headers."transactionId"]]></ee:set-variable>
+				<ee:set-variable variableName="departureLocation" ><![CDATA[attributes.queryParams.'departureLocation']]></ee:set-variable>
+				<ee:set-variable variableName="destinationLocation" ><![CDATA[attributes.queryParams.'destinationLocation']]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+	</sub-flow>
+	<flow name="get:\booking\(transportType)\route:RnS-papi-config">
+        <flow-ref doc:name="Flow Reference" doc:id="128ce699-1cc2-4430-9486-4c16745af30c" name="get:\booking\(transportType)\route:RnS-Initializing-Var-papi-Sub_Flow"/>
+		<logger level="INFO" doc:name="in-Logger" doc:id="3415f86f-00ed-4c43-a6fa-50669e5579a4" message="Request Recieve for Route Papi API for Transaction Id :  #[vars.transactionId] "/>
+        <flow-ref doc:name="Flow Reference" doc:id="33ab3bcc-a1cc-4086-bc47-45fc0f8533c7" name="routes-ImplementationSub_Flow"/>
+        <logger level="INFO" doc:name="outLogger" doc:id="cef553cb-5037-4996-9b0c-0285b4abfa7e" message="Response sent for Route Papi API for Transaction Id :  #[vars.transactionId] , #[vars.transportCompany] ,#[vars.transportType] , #[vars.destinationLocation] , #[vars.departureLocation]"/>
+    </flow>
+    <flow name="get:\booking\(transportType)\schedule:RnS-papi-config">
+        <flow-ref doc:name="Flow Reference" doc:id="d8a8c789-e757-43f1-ac86-0db53584b87d" name="get:\booking\(transportType)\route:RnS-Initializing-Var-papi-Sub_Flow"/>
+        <logger level="INFO" doc:name="in-Logger" doc:id="37effe49-fe4b-42b0-92ff-eb619d84ab7d" message="Request Recieve for Schedule Papi API for Transaction Id :  #[vars.transactionId]" />
+		<flow-ref doc:name="Flow Reference" doc:id="7946dacf-f294-48a9-bb58-48129f44a5e0" name="schedules-ImplementationSub_Flow"/>
+		<logger level="INFO" doc:name="out-Logger" doc:id="28c62f8f-062d-4b7d-a637-202cf1cc7b2b" message="Response sent for Schedule Papi API for Transaction Id :  #[vars.transactionId]" />
+    </flow>
+</mule>

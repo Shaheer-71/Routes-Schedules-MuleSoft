@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="schedules-ImplementationSub_Flow" doc:id="1c81cc73-47e1-4166-8892-bfb522ad484d" >
+			<logger level="INFO" doc:name="Logger" doc:id="e751af04-b45b-4ea0-b3ca-2b0fa181de31" />
+		<choice doc:name="Choice" doc:id="5062f0cd-823a-4cac-a49c-97acbff2966f" >
+			<when expression='#[vars.transportCompany == "fastGo"]'>
+				<ee:cache doc:name="Cache" doc:id="a5ad029b-132a-43cc-9a3d-f7da7828d9b2">
+				    <set-variable 
+				    value="#['/api/' ++ (vars.transportType default 'bus')  ++  p('http.requester.fg.schedulePath')]" 
+				    doc:name="Set Variable" 
+				    doc:id="3bcd3d34-21f3-4c0c-88f3-9a8c34fa460f" 
+				    variableName="resourcePath"/>
+					
+					<http:request 
+				        method="GET" 
+				        doc:name="Request Fast Go Routes" 
+				        doc:id="04a91644-ee83-41d2-9a26-1b23b009e07a" 
+				        config-ref="HTTP_Request_configuration_FG_Sapi" 
+				        path="#[vars.resourcePath]">
+				        <http:headers><![CDATA[#[output application/java
+---
+{
+	"transactionId" : vars.transactionId
+}]]]></http:headers>
+				    </http:request>
+					<ee:transform doc:name="Transform Message" doc:id="fbd085c9-3808-49ba-8741-b143698f17a6" >
+						<ee:message >
+							<ee:set-payload ><![CDATA[payload]]></ee:set-payload>
+						</ee:message>
+					</ee:transform>
+				
+</ee:cache>
+				<logger level="INFO" doc:name="Logger" doc:id="8d64a04f-06ce-4293-bc01-e0ad75634c8d" message="#[payload]"/>
+			</when>
+			<when expression='#[vars.transportCompany == "travelOnTrip"]'>
+				<ee:cache doc:name="Cache" doc:id="ad5d67cb-28c9-4b07-a1b5-b4fc57e8ae2f" >
+					<set-variable value="#['/api/' ++ (vars.transportType default 'bus')  ++  p('http.requester.tot.schedulePath')]" doc:name="Set Variable" doc:id="2e0bbf97-1cd9-4396-96d2-3f2b4607bbd4" variableName="resourcePath" />
+					<http:request 
+					method="GET" 
+					doc:name="Request Travel On Trip Routes" 
+					
+					doc:id="dc12ba2f-738b-410f-8d18-643fa867c2d5" 
+					config-ref="HTTP_Request_configuration_TOT_Sapi" 
+					path="#[vars.resourcePath]">
+						<http:headers ><![CDATA[#[output application/java
+---
+{
+	"transactionId" : vars.transactionId
+}]]]></http:headers>
+					</http:request>
+					<ee:transform doc:name="Transform Message" doc:id="8c75758e-d003-47b7-b0c5-41f60c8edaad" >
+						<ee:message >
+							<ee:set-payload ><![CDATA[payload]]></ee:set-payload>
+						</ee:message>
+					</ee:transform>
+				</ee:cache>
+				<logger level="INFO" doc:name="Logger" doc:id="7b9e196b-4998-4430-8d01-ee3cd3e27ec8" message="payload"/>
+			
+</when>
+			<otherwise >
+				<scatter-gather doc:name="Scatter-Gather" doc:id="9b16cd47-dc43-405b-b72e-5b1a6c741406" >
+					<route >
+						<set-payload value="#['/api/' ++ (vars.transportType default 'bus')  ++  p('http.requester.fg.schedulePath')]" doc:name="Set Payload" doc:id="00590c4d-e100-419f-9149-a0acdbce64e9" />
+						<http:request method="GET" doc:name="Request Fast Go Routes" doc:id="f1d6f83c-73c5-463e-8f95-46c55ee6fb29" config-ref="HTTP_Request_configuration_FG_Sapi" path="/api/++ #[vars.transportType] ++/ ${http.requester.fg.routesPath}" >
+							<http:headers ><![CDATA[#[output application/java
+---
+{
+	"transactionId" : vars.transactionId
+}]]]></http:headers>
+						</http:request>
+					</route>
+					<route >
+						<set-variable value="#['/api/' ++ (vars.transportType default 'bus')  ++  p('http.requester.tot.schedulePath')]" doc:name="Set Variable" doc:id="4b69cb5f-a9ae-4dd7-b3b5-6e6e2b48add7" variableName="resourcePath" />
+						<http:request method="GET" doc:name="Request Travel On Trip Routes" doc:id="e97e42cf-29b5-4528-ba5b-a4b590b05bdf" config-ref="HTTP_Request_configuration_TOT_Sapi" path="/api/++ #[vars.transportType] ++/ ${http.requester.tot.routesPath}" >
+							<http:headers ><![CDATA[#[output application/java
+---
+{
+	"transactionId" : vars.transactionId
+}]]]></http:headers>
+						</http:request>
+					</route>
+				
+</scatter-gather>
+			
+</otherwise>
+		</choice>
+	</sub-flow>
+</mule>

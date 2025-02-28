@@ -1,0 +1,57 @@
+[
+  {
+    "companyCode": "TransNational",
+    "originLocation": {
+      "locationCode": "BEN-SG",
+      "locationDesc": "Beasna Vista Singapore"
+    },
+    "destinationLocation": {
+      "locationCode": "LAX-US",
+      "locationDesc": "Los Angeles, CA, USA"
+    }
+  },
+  {
+    "companyCode": "TransNational",
+    "originLocation": {
+      "locationCode": "LON-UK",
+      "locationDesc": "London, UK"
+    },
+    "destinationLocation": {
+      "locationCode": "JFK-US",
+      "locationDesc": "New York City, NY, USA"
+    }
+  },
+  {
+    "companyCode": "TransNational",
+    "originLocation": {
+      "locationCode": "SYD-AU",
+      "locationDesc": "Sydney, Australia"
+    },
+    "destinationLocation": {
+      "locationCode": "SFO-US",
+      "locationDesc": "San Francisco, CA, USA"
+    }
+  },
+  {
+    "companyCode": "TransNational",
+    "originLocation": {
+      "locationCode": "DEL-IN",
+      "locationDesc": "Delhi, India"
+    },
+    "destinationLocation": {
+      "locationCode": "LHR-UK",
+      "locationDesc": "London Heathrow, UK"
+    }
+  },
+  {
+    "companyCode": "TransNational",
+    "originLocation": {
+      "locationCode": "BER-DE",
+      "locationDesc": "Berlin, Germany"
+    },
+    "destinationLocation": {
+      "locationCode": "FRA-DE",
+      "locationDesc": "Frankfurt, Germany"
+    }
+  }
+]

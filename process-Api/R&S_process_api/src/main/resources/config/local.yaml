@@ -1,0 +1,19 @@
+
+http :
+  listener:
+    host: "0.0.0.0"
+    port: "8085"
+    
+  requester:
+    tot:
+      host: "localhost"
+      port: "8083"
+      routesPath: "/travelOnTrip/route"
+      schedulePath: "/travelOnTrip/schedule"
+    fg:
+      host: "localhost"
+      port: "8084"
+      routesPath: "/fastGo/route"
+      schedulePath: "/fastGo/schedule"
+    
+  

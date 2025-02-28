@@ -1,0 +1,92 @@
+#%RAML 1.0
+title: Retrieve-Consolidated-RoutesAndSchedules-PAPI
+description: This RAML file will retrieve consolidate Routes and Schedule for Process Api
+
+uses:
+  common : libraries/common/commonBusiness-library.raml
+  routes : /libraries/route/routeBusinessLibrary.raml
+  schedule : /libraries/schedules/scheduleBusinessLibrary.raml
+
+
+################################################## Base Path ################################################
+/booking:
+  /{transportType}:
+
+
+################################################## /route ###################################################
+    /route:
+      get:
+        is:
+          - common.transactionId
+          - common.companyName
+          - common.departureLocation
+          - common.destinationLocation
+
+        responses:
+          200:
+            body:
+              application/json:
+                type: routes.getRoutes200Response
+                example: !include /libraries/route/examples/getRoutes-200-Response-Example.json
+                 
+          400:
+            body:
+              application/json:
+                type : common.400Response
+                example: !include /libraries/common/examples/400-Response-Example.json
+
+          404:
+            body:
+              application/json:
+                type : common.404Response
+                example: !include /libraries/common/examples/404-Response-Example.json
+
+          500:
+            body:
+              application/json:
+                type : common.500Response
+                example: !include /libraries/common/examples/500-Response-Example.json
+
+
+  ################################################## /schedule ################################################
+    /schedule:
+      get:
+
+        is:
+          - common.transactionId
+          - common.companyName
+          - common.departureLocation
+          - common.destinationLocation
+          - common.requestTimezone
+
+        responses:
+          200:
+
+            body:
+              application/json:
+                type: schedule.getSchedule200Response
+                example: !include /libraries/schedules/examples/getSchedules-200-Response-Example.json
+
+          400:
+            body:
+              application/json:
+                type : common.400Response
+                example: !include /libraries/common/examples/400-Response-Example.json
+
+          404:
+            body:
+              application/json:
+                type : common.404Response
+                example: !include /libraries/common/examples/404-Response-Example.json
+
+          500:
+            body:
+              application/json:
+                type : common.500Response
+                example: !include /libraries/common/examples/500-Response-Example.json
+
+
+
+
+        
+       

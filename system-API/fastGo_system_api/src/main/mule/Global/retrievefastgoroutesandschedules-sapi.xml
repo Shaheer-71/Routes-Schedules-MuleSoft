@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
     
-    <flow name="retrievefastgoroutesandschedules-sapi-main">
+    <flow name="retrievefastgoroutesandschedules-sapi-mainn">
         <http:listener path="/api/*" config-ref="retrievetravelontriproutesandschedules-sapi-httpListenerConfig">
             <http:response statusCode="#[vars.httpStatus default 200]">
                 <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
@@ -37,17 +37,17 @@
 			</ee:variables>
 		</ee:transform>
 	</sub-flow>
-	<flow name="get:\(transportType)\(transportCompany)\routes:retrievefastgoroutesandschedules-sapi-config">
+	<flow name="get:\(transportType)\(transportCompany)\route:retrievefastgoroutesandschedules-sapi-config">
         <flow-ref doc:name="Flow Reference Initialize Request Variable" doc:id="5a376114-4761-46e1-b978-e27bf28e838f" name="fastGo-sapi-initialize-request-variable-Sub_Flow" />
 		<logger level="INFO" doc:name="Logger" doc:id="3415f86f-00ed-4c43-a6fa-50669e5579a4" message="Request Recieve for TravelonTrip System API for Route :  #[vars.transactionId]"/>
 		<flow-ref doc:name="Flow Reference" doc:id="ae3fc44b-642d-42e4-ab91-ed845701bc99" name="fastGo-Routes-ImplementationSub_Flow"/>
 		<logger level="INFO" doc:name="Logger" doc:id="cef553cb-5037-4996-9b0c-0285b4abfa7e" message="Response sent for TravelonTrip System API for Route :  #[vars.transactionId]"/>
         
     </flow>
-    <flow name="get:\(transportType)\(transportCompany)\schedules:retrievefastgoroutesandschedules-sapi-config">
+    <flow name="get:\(transportType)\(transportCompany)\schedule:retrievefastgoroutesandschedules-sapi-config">
         <flow-ref doc:name="Flow Reference Initialize Request Variable" doc:id="c6a5d255-b6e0-4f68-87b3-6004f93506ef" name="fastGo-sapi-initialize-request-variable-Sub_Flow"/>
 		<logger level="INFO" doc:name="Logger" doc:id="85a4566a-896d-483d-bce2-cbd7b20d996e" message="Request Recieve for TravelonTrip System API for Schedule :  #[vars.transactionId]"/>
 		<flow-ref doc:name="Flow Reference" doc:id="4e2d897f-fc54-4310-9773-f49986319133" name="fastGo-Schedules-ImplementationSub_Flow"/>
-		<logger level="INFO" doc:name="Logger" doc:id="036b13c8-b481-44bc-966b-89195930fe30" message="Response sent for TravelonTrip System API for Schedule :  #[vars.transactionId]"/>
+		<logger level="INFO" doc:name="Loggerr" doc:id="036b13c8-b481-44bc-966b-89195930fe30" message="Response sent for TravelonTrip System API for Schedule :  #[vars.transactionId]"/>
     </flow>
 </mule>

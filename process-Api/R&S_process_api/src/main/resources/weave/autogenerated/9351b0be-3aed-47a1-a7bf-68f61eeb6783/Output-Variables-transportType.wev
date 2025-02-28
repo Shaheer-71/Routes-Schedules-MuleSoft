@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_9351b0be_3aed_47a1_a7bf_68f61eeb6783_Output_Variables_transportType = Any
+
